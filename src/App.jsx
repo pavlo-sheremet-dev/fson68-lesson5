@@ -3,6 +3,12 @@ import { Navigate, Route, Routes } from "react-router-dom";
 import { Layout } from "./components";
 import SignInPage from "./pages/SignInPage";
 
+const TEST_KEY = import.meta.env.DEV
+  ? import.meta.env.VITE_TEST_KEY_DEV
+  : import.meta.env.VITE_TEST_KEY_PROD;
+
+console.log("TEST_KEY", TEST_KEY);
+
 const App = () => {
   return (
     <>
