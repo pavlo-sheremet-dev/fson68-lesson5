@@ -1,39 +1,44 @@
 import { NavLink } from "react-router-dom";
-import { routes } from "../../../routes/routes";
+import { getRoutes } from "../../../routes/routes";
+import { useAuth } from "../../../providers/AuthProvider";
+import { selectTheme, useStore } from "../../../store/store";
 
 export const Header = () => {
+  const { goggleSignOut, user } = useAuth();
+  const { setThemeTitle, themeTitle, toggleThemeTitle } = useStore(selectTheme);
+
+  const routes = getRoutes({
+    isLoggedIn: Boolean(user),
+    userRole: user?.role ?? "default",
+  });
+
   return (
     <header>
       <div>
         <nav>
           <ul style={{ display: "flex", gap: 20, listStyle: "none" }}>
-            <li>
-              <NavLink to={routes.home.path}>{routes.home.title}</NavLink>
-            </li>
-            <li>
-              <NavLink to={routes.contacts.path}>{routes.home.title}</NavLink>
-            </li>
-            <li>
-              <NavLink to={routes.signIn.path}>{routes.signIn.title}</NavLink>
-            </li>
-            <li>
-              <NavLink to={routes.user.path}>{routes.user.title}</NavLink>
-            </li>
-            <li>
-              <NavLink to={routes.admin.path}>{routes.admin.title}</NavLink>
-            </li>
+            {routes.map(({ path, relativePath, title }) => (
+              <li key={path}>
+                <NavLink to={path} end={!relativePath}>
+                  {title}
+                </NavLink>
+              </li>
+            ))}
           </ul>
-          <div>
-            <span>Hello, ...</span>
-            <button
-              type="button"
-              onClick={() => {
-                console.log("sign out");
-              }}
-            >
-              SIGN OUT
-            </button>
-          </div>
+          {!!user && (
+            <div>
+              <span>Hello, {user.name}</span>
+              <button type="button" onClick={goggleSignOut}>
+                SIGN OUT
+              </button>
+            </div>
+          )}
+          <button type="button" onClick={toggleThemeTitle}>
+            {themeTitle}
+          </button>
+          <button type="button" onClick={() => setThemeTitle("light")}>
+            switch to light
+          </button>
         </nav>
       </div>
     </header>

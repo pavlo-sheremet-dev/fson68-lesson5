@@ -1,14 +1,13 @@
 import PropTypes from "prop-types";
 import { Navigate } from "react-router-dom";
+import { useAuth } from "../providers";
 
 export const AuthRoute = ({
   redirectPath = "/",
   accessForRoles = [],
   children,
 }) => {
-  // const { user } = useAuth();
-
-  const user = null;
+  const { user } = useAuth();
 
   const isAccessesAllowed = Boolean(
     user &&

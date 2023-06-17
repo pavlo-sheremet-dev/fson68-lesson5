@@ -1,12 +1,10 @@
 import PropTypes from "prop-types";
 import { Navigate } from "react-router-dom";
+import { useAuth } from "../providers";
 
 export const NotAuthRoute = ({ children, redirectPath = "/" }) => {
-  // const { user } = useAuth();
+  const { user } = useAuth();
 
-  // const { user } = useAuth();
-
-  const user = null;
   return !user ? children : <Navigate to={redirectPath} replace={true} />;
 };
 
